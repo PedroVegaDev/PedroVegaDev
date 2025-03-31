@@ -1,0 +1,64 @@
+---
+import { Image } from "astro:assets";
+
+const features = [
+  {
+    title: "Consulta Inicial",
+    description:
+      "Comienzo con una reunión detallada para entender tus objetivos, desafíos y visión de negocio.",
+    icon: "https://api.iconify.design/ph:number-square-one.svg",
+  },
+  {
+    title: "Análisis",
+    description:
+      "Realizo un diagnóstico profundo de tus procesos e identifico puntos de mejora específicos.",
+    icon: "https://api.iconify.design/ph:number-square-two.svg",
+  },
+  {
+    title: "Desarrollo",
+    description:
+      "Implemento la solución utilizando metodologías ágiles con ciclos de retroalimentación constante para asegurar que cumpla tus expectativas.",
+    icon: "https://api.iconify.design/ph:number-square-three.svg",
+  },
+  {
+    title: "Entrega",
+    description:
+      "Realizo la implementación final, te proporciono capacitación personalizada y establezco un plan de soporte continuo.",
+    icon: "https://api.iconify.design/ph:number-square-four.svg",
+  },
+];
+---
+
+<section id="proceso" class="mb-40">
+  <div class="mt-16 md:mt-0">
+    <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+      Mi Proceso de Trabajo
+    </h2>
+    <p class="text-lg mt-4 text-slate-600">
+      Sigo una metodología probada que garantiza resultados exitosos en cada
+      proyecto que emprendo.
+    </p>
+  </div>
+
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16">
+    {
+      features.map((feature) => (
+        <div class="flex gap-4 items-start">
+          <Image
+            width="48"
+            height="48"
+            class="w-12 h-12"
+            src={feature.icon}
+            alt={feature.title}
+          />
+          <div>
+            <h3 class="font-semibold text-lg">{feature.title}</h3>
+            <p class="text-slate-500 mt-2 leading-relaxed">
+              {feature.description}
+            </p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
