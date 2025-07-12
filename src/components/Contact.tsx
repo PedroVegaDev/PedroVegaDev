@@ -1,36 +1,79 @@
-import React, { useState } from 'react';
-import { Mail, Github, Linkedin } from 'lucide-react';
+import React, { useState } from "react";
+import { Mail, Github, Linkedin } from "lucide-react";
+import emailjs from "@emailjs/browser";
+import toast from "react-hot-toast";
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para enviar el formulario
-    console.log('Formulario enviado:', formData);
-    // Reset form
-    setFormData({ name: '', email: '', message: '' });
+    setIsLoading(true);
+    try {
+      const response = await emailjs.sendForm(
+        "service_u1fljb7",
+        "template_b90pf1k",
+        e.target as HTMLFormElement,
+        "WEFZvg-B1QpiVgLJL"
+      );
+
+      if (response.status === 200) {
+        console.log("Formulario enviado:", formData);
+        setFormData({ name: "", email: "", message: "" });
+        toast.success("Formulario enviado correctamente", {
+          duration: 4000,
+          position: "bottom-right",
+          className: "dark:bg-indigo-600 dark:text-white",
+          iconTheme: {
+            primary: "#9333ea",
+            secondary: "#fff",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error al enviar formulario:", error);
+      toast.error("Error al enviar formulario", {
+        duration: 4000,
+        position: "bottom-right",
+        iconTheme: {
+          primary: "#9333ea",
+          secondary: "#fff",
+        },
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <section id="contacto" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-100/50 to-indigo-100/50 dark:from-purple-900/50 dark:to-cyan-900/50 relative">
+    <section
+      id="contacto"
+      className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-100/50 to-indigo-100/50 dark:from-purple-900/50 dark:to-cyan-900/50 relative"
+    >
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-cyan-400 dark:to-pink-400 bg-clip-text text-transparent mb-6 drop-shadow-lg">Trabajemos Juntos</h2>
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-cyan-400 dark:to-pink-400 bg-clip-text text-transparent mb-6 drop-shadow-lg">
+            Trabajemos Juntos
+          </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-cyan-400 dark:to-pink-400 mx-auto mb-8 shadow-lg shadow-indigo-400/50 dark:shadow-cyan-400/50"></div>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            ¿Tienes un proyecto en mente o quieres discutir oportunidades? Me encantaría escucharte.
+            ¿Tienes un proyecto en mente o quieres discutir oportunidades? Me
+            encantaría escucharte.
           </p>
         </div>
 
@@ -41,8 +84,12 @@ const Contact: React.FC = () => {
                 <Mail size={24} className="text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Email</h3>
-                <p className="text-gray-600 dark:text-gray-300">pedro.vega.damian@gmail.com</p>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  Email
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  pedro.vega.damian@gmail.com
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -50,8 +97,12 @@ const Contact: React.FC = () => {
                 <Github size={24} className="text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">GitHub</h3>
-                <p className="text-gray-600 dark:text-gray-300">@PedroVegaDev</p>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  GitHub
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  @PedroVegaDev
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -59,7 +110,9 @@ const Contact: React.FC = () => {
                 <Linkedin size={24} className="text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">LinkedIn</h3>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  LinkedIn
+                </h3>
                 <p className="text-gray-600 dark:text-gray-300">PedroVegaDev</p>
               </div>
             </div>
@@ -68,35 +121,44 @@ const Contact: React.FC = () => {
           <div className="bg-white/60 dark:bg-black/60 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/80 dark:hover:bg-black/80 hover:shadow-xl hover:shadow-indigo-500/30 dark:hover:shadow-cyan-500/30 transition-all duration-300 border border-indigo-400/20 dark:border-cyan-400/20">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Nombre</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
+                  Nombre
+                </label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
+                  disabled={isLoading}
                   className="w-full px-4 py-3 border border-indigo-400/30 dark:border-cyan-400/30 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-cyan-500 focus:border-indigo-500 dark:focus:border-cyan-500 transition-colors bg-white/60 dark:bg-black/60 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   placeholder="Tu Nombre"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Email</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
+                  Email
+                </label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  disabled={isLoading}
                   className="w-full px-4 py-3 border border-indigo-400/30 dark:border-cyan-400/30 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-cyan-500 focus:border-indigo-500 dark:focus:border-cyan-500 transition-colors bg-white/60 dark:bg-black/60 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   placeholder="tu@email.com"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Mensaje</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
+                  Mensaje
+                </label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
+                  disabled={isLoading}
                   rows={4}
                   className="w-full px-4 py-3 border border-indigo-400/30 dark:border-cyan-400/30 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-cyan-500 focus:border-indigo-500 dark:focus:border-cyan-500 transition-colors bg-white/60 dark:bg-black/60 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   placeholder="Tu mensaje..."
@@ -105,9 +167,10 @@ const Contact: React.FC = () => {
               </div>
               <button
                 type="submit"
+                disabled={isLoading}
                 className="w-full px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-cyan-500 dark:to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-indigo-500/50 dark:hover:shadow-cyan-500/50 transform hover:scale-105 transition-all duration-300 border border-indigo-400/30 dark:border-cyan-400/30"
               >
-                Enviar Mensaje
+                {isLoading ? "Enviando..." : "Enviar Mensaje"}
               </button>
             </form>
           </div>

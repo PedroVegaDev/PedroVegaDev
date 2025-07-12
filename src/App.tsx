@@ -7,6 +7,7 @@ import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -72,6 +73,7 @@ function App() {
         <Contact />
         <Footer />
       </div>
+      <Toaster />
     </ThemeProvider>
   );
 }
